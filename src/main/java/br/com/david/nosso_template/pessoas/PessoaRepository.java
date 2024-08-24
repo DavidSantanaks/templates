@@ -1,6 +1,5 @@
-package br.com.david.nosso_template.pessoas.repository;
+package br.com.david.nosso_template.pessoas;
 
-import br.com.david.nosso_template.pessoas.PessoasEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
