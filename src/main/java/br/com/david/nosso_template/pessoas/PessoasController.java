@@ -1,8 +1,5 @@
-package br.com.david.nosso_template.pessoas.controller;
+package br.com.david.nosso_template.pessoas;
 
-import br.com.david.nosso_template.pessoas.PessoasEntity;
-import br.com.david.nosso_template.pessoas.dto.PessoaRecord;
-import br.com.david.nosso_template.pessoas.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +19,7 @@ public class PessoasController {
 
     @PostMapping
     public void savePessoas(@RequestBody PessoaRecord pessoa){
-            PessoasEntity ps = new PessoasEntity(null,pessoa.name(), pessoa.company());
+            PessoasEntity ps = new PessoasEntity(null,pessoa.name(), pessoa.company(), pessoa.type());
             repository.save(ps);
     }
 
