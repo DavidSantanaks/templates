@@ -1,8 +1,7 @@
 package br.com.david.nosso_template.templates;
 
-import br.com.david.nosso_template.company.CompanyRepository;
 import br.com.david.nosso_template.pessoas.PessoasEntity;
-import br.com.david.nosso_template.pessoas.repository.PessoaRepository;
+import br.com.david.nosso_template.pessoas.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +18,6 @@ public class templateController {
     TemplateRepository templateRepository;
     @Autowired
     PessoaRepository pessoaRepository;
-    @Autowired
-    CompanyRepository companyRepository;
-
 
     @GetMapping()
     public List<TemplateEntity> getAll(){
@@ -35,7 +31,7 @@ public class templateController {
 
        Optional<PessoasEntity> pessoaRecord = pessoaRepository.findById(idPessoa);
        String corrigida = templateSave.replace("${name}", pessoaRecord.get().getName())
-                                       .replace("${company}", pessoaRecord.get().getCompany());
+                                       .replace("${company}", pessoaRecord.get().getCompany().getName());
 
        templateSave = corrigida;
        return templateSave;
