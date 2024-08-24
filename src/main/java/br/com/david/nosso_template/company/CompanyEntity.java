@@ -18,5 +18,6 @@ public class CompanyEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String name;
-
+    @Column(length = 14, unique = true)
+    private String cnpj;
 }
