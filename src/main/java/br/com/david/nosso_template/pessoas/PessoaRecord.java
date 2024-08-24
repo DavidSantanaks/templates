@@ -1,5 +1,7 @@
-package br.com.david.nosso_template.pessoas.dto;
+package br.com.david.nosso_template.pessoas;
 
-public record PessoaRecord(Integer id,String name, String company) {
+import br.com.david.nosso_template.company.CompanyEntity;
+
+public record PessoaRecord(Integer id, String name, CompanyEntity company, PessoaEnum type) {
 
 }
