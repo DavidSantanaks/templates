@@ -1,5 +1,6 @@
 package br.com.david.nosso_template.templates;
 
+import br.com.david.nosso_template.company.CompanyRepository;
 import br.com.david.nosso_template.pessoas.PessoasEntity;
 import br.com.david.nosso_template.pessoas.dto.PessoaRecord;
 import br.com.david.nosso_template.pessoas.repository.PessoaRepository;
@@ -19,23 +20,27 @@ public class templateController {
     TemplateRepository templateRepository;
     @Autowired
     PessoaRepository pessoaRepository;
+    @Autowired
+    CompanyRepository companyRepository;
 
     @GetMapping()
     public List<TemplateEntity> getAll(){
         return templateRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public String findTemplateId(@PathVariable Integer id){
+    @GetMapping("/{id}/pessoa/{idPessoa}")
+    public String findTemplateId(@PathVariable Integer id, @PathVariable Integer idPessoa){
        Optional<TemplateEntity> te = templateRepository.findById(id);
        String templateSave = te.get().getTemplate();
 
-       Optional<PessoasEntity> pessoaRecord = pessoaRepository.findById(id);
-       String corrigida = templateSave.replace("${name}", pessoaRecord.get().getName() );
+       Optional<PessoasEntity> pessoaRecord = pessoaRepository.findById(idPessoa);
+
+       String corrigida = templateSave.replace("${name}", pessoaRecord.get().getName())
+                                       .replace("${company}", pessoaRecord.get().getCompany());
+
+
        templateSave = corrigida;
-
        return templateSave;
-
     }
 
 
@@ -45,8 +50,5 @@ public class templateController {
         templateRepository.save(te);
 
     }
-
-
-
 
 }
