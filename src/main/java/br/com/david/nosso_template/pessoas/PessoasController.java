@@ -1,6 +1,5 @@
 package br.com.david.nosso_template.pessoas;
 
-import br.com.david.nosso_template.company.CompanyDTO;
 import br.com.david.nosso_template.company.CompanyEntity;
 import br.com.david.nosso_template.company.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.RuntimeErrorException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -34,7 +31,6 @@ public class PessoasController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PessoasEntity> updatePessoa(@RequestBody PessoaRecord pessoaRecord, @PathVariable Integer id) {
-
 
         PessoasEntity pessoa = pessoaRepository.findById(id).orElseThrow(()-> new RuntimeException("ID não encontrado"));
 
