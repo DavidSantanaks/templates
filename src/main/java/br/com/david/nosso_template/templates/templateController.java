@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ import java.util.Optional;
 
 public class templateController {
 
+
+
     @Autowired
     TemplateRepository templateRepository;
     @Autowired
@@ -27,6 +30,7 @@ public class templateController {
     public List<TemplateEntity> getAll(){
         return templateRepository.findAll();
     }
+
 
     @GetMapping("/{id}/pessoa/{idPessoa}")
     public String findTemplateId(@PathVariable Integer id, @PathVariable Integer idPessoa){
@@ -61,10 +65,8 @@ public class templateController {
             template.get().setTemplate(templateRecord.template());
             template.get().setDateCreate(LocalDateTime.now());
         }
-
         TemplateEntity save = templateRepository.save(template.get());
         return new ResponseEntity<>(HttpStatusCode.valueOf(200));
-
     }
 
 }
