@@ -18,18 +18,10 @@ public class PessoasEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-    @NotBlank(message = "campo nome n pode ser vazio")
     private String name;
-
     @ManyToOne
     private CompanyEntity company;
-
-    @Enumerated(EnumType.ORDINAL)
-    @NotBlank(message = "campo type n pode ser vazio")
     private PessoaEnum type;
-
-    @Email(message = "Email invalido")
     private String email;
 
 
