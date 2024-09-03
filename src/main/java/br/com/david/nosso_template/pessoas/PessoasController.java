@@ -4,8 +4,10 @@ import br.com.david.nosso_template.company.CompanyEntity;
 import br.com.david.nosso_template.company.CompanyRepository;
 import br.com.david.nosso_template.exceptions.ExceptionsComuns;
 import br.com.david.nosso_template.parserUtils.ParsesUtils;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.util.Cast;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +36,16 @@ public class PessoasController {
         return new ResponseEntity<>(find, HttpStatusCode.valueOf(200));
     }
 
-
     @PostMapping
-    public void savePessoas(@RequestBody PessoaRecord pessoa) {
-        PessoasEntity ps = new PessoasEntity(null, pessoa.name(), pessoa.company(), pessoa.type(),pessoa.email());
-        pessoaRepository.save(ps);
+    public ResponseEntity<?> savePessoa(@Valid @RequestBody PessoaRecord pessoaRecord){
+        if(pessoaRecord == null){
+            return new ResponseEntity<>(pessoaRecord, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        PessoasEntity save = ParsesUtils.toPessoaEntity(pessoaRecord);
+        pessoaRepository.save(save);
+
+        return new ResponseEntity<>(HttpStatusCode.valueOf(201));
     }
 
     @PutMapping("/{id}")
