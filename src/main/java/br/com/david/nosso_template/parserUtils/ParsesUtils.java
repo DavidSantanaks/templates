@@ -13,4 +13,13 @@ public class ParsesUtils {
         PessoaRecord convertido = new PessoaRecord(pessoas.getId(), pessoas.getName(), pessoas.getCompany(),pessoas.getType(), pessoas.getEmail());
         return convertido;
     }
+
+    public static PessoasEntity toPessoaEntity(PessoaRecord pessoas){
+        if (pessoas == null){
+            return null;
+        }
+
+        PessoasEntity convertido = new PessoasEntity(pessoas.id(), pessoas.name(), pessoas.company(),pessoas.type(), pessoas.email());
+        return convertido;
+    }
 }
