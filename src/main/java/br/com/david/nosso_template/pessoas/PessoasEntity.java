@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.hibernate.annotations.ManyToAny;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,12 +25,12 @@ public class PessoasEntity {
     @ManyToOne
     private CompanyEntity company;
 
-    @Email(message = "Email invalido")
-    private String email;
-
-
     @Enumerated(EnumType.ORDINAL)
     @NotBlank(message = "campo type n pode ser vazio")
     private PessoaEnum type;
+
+    @Email(message = "Email invalido")
+    private String email;
+
 
 }
