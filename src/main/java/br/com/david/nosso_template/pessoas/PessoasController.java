@@ -2,12 +2,16 @@ package br.com.david.nosso_template.pessoas;
 
 import br.com.david.nosso_template.company.CompanyEntity;
 import br.com.david.nosso_template.company.CompanyRepository;
+import br.com.david.nosso_template.exceptions.ExceptionsComuns;
+import br.com.david.nosso_template.parserUtils.ParsesUtils;
+import org.apache.logging.log4j.util.Cast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -23,16 +27,24 @@ public class PessoasController {
         return pessoaRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PessoaRecord> searchOne(@PathVariable Integer id){
+        PessoasEntity search = pessoaRepository.findById(id).orElseThrow(() -> new ExceptionsComuns("Pessoa não encontrada, ID: " + id));
+        PessoaRecord find = ParsesUtils.toPessoaRecord(search);
+        return new ResponseEntity<>(find, HttpStatusCode.valueOf(200));
+    }
+
+
     @PostMapping
     public void savePessoas(@RequestBody PessoaRecord pessoa) {
-        PessoasEntity ps = new PessoasEntity(null, pessoa.name(), pessoa.company(), pessoa.email(), pessoa.type());
+        PessoasEntity ps = new PessoasEntity(null, pessoa.name(), pessoa.company(), pessoa.type(),pessoa.email());
         pessoaRepository.save(ps);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PessoasEntity> updatePessoa(@RequestBody PessoaRecord pessoaRecord, @PathVariable Integer id) {
 
-        PessoasEntity pessoa = pessoaRepository.findById(id).orElseThrow(()-> new RuntimeException("ID não encontrado"));
+        PessoasEntity pessoa = pessoaRepository.findById(id).orElseThrow(()-> new ExceptionsComuns("ID não encontrado"));
 
         if(pessoaRecord.name() != null){
             pessoa.setName(pessoaRecord.name());
