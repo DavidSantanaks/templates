@@ -1,13 +1,17 @@
 package br.com.david.nosso_template.templates;
 
+import br.com.david.nosso_template.exceptions.ExceptionsComuns;
+import br.com.david.nosso_template.parserUtils.ParsesUtils;
 import br.com.david.nosso_template.pessoas.PessoasEntity;
 import br.com.david.nosso_template.pessoas.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.time.LocalDateTime;
@@ -18,8 +22,6 @@ import java.util.Optional;
 @RequestMapping("/templates")
 
 public class templateController {
-
-
 
     @Autowired
     TemplateRepository templateRepository;
@@ -47,25 +49,21 @@ public class templateController {
 
 
     @PostMapping()
-    public void personalizado(@RequestBody TemplateRecord templateRecord){
-        TemplateEntity te = new TemplateEntity(null,templateRecord.template(),null);
+    public void personalizado(@Validated @RequestBody TemplateRecord templateRecord){
+        TemplateEntity te = ParsesUtils.toTemplateEntity(templateRecord);
         templateRepository.save(te);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TemplateRecord> updateTemplate(@RequestBody TemplateRecord templateRecord, @PathVariable Integer id){
-        Optional<TemplateEntity> template = templateRepository.findById(id);
-
-        if (template.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> updateTemplate(@Validated @RequestBody TemplateRecord templateRecord, @PathVariable Integer id){
+        TemplateEntity template = templateRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Template não encontrado, ID:" + id));
 
         if(templateRecord.template() != null){
-            template.get().setTemplate(templateRecord.template());
-            template.get().setDateCreate(LocalDateTime.now());
+            template.setTemplate(templateRecord.template());
+            template.setDateCreate(LocalDateTime.now());
         }
-        TemplateEntity save = templateRepository.save(template.get());
+        TemplateEntity save = templateRepository.save(template);
         return new ResponseEntity<>(HttpStatusCode.valueOf(200));
     }
 
