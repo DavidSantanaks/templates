@@ -26,8 +26,6 @@ public class TemplateEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String template;
-    @CreationTimestamp
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateCreate;
 
 
